@@ -10,20 +10,25 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 
 > **Note**: Aplikasi ini adalah bagian dari mini project NFA | Booksales - platform penjualan buku yang terdiri dari web frontend, dan backend API.
 
-
 ## Identitas
 - Nama: Firenze Higa Putra
 - Kampus: Sekolah Tinggi Teknologi Terpadu Nurul Fikri
 - NIM: 0110223014
 - ID NFA: FWD03008
 
+## Daftar Pertemuan
+
+- **Pertemuan 1**: 22 Oktober 2025
+
 ## Struktur Repo
 - Setiap tugas akan disimpan sesuai pertemuan.
+- File tugas pertemuan 1: Buatlah fitur read dan create data untuk genre dan author pada tampilan Admin. Desain antarmuka sesuai kreativitas masing-masing.
 
+ Tugas:
+- Buat fitur read dan create data untuk Genre dan Author.
 ---
 
 > Dibuat untuk memenuhi tugas course React JS Lanjutan SIB NF Academy.
-
 
 ---
 
