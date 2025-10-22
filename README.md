@@ -4,6 +4,12 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 
 - **Merupakan lanjutan dari course React JS Dasar**: [reactjs-nfa](https://github.com/firenzehiga/reactjs-nfa)
 
+## 🔗 Related Repositories
+
+- **Backend API**: [booksales-api](https://github.com/firenzehiga/booksales-api) - REST API server untuk booksales-fe
+
+> **Note**: Aplikasi ini adalah bagian dari mini project NFA | Booksales - platform penjualan buku yang terdiri dari web frontend, dan backend API.
+
 
 ## Identitas
 - Nama: Firenze Higa Putra
@@ -16,7 +22,7 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 
 ---
 
-> Dibuat untuk memenuhi tugas course React JS Dasar & Lanjutan SIB NF Academy.
+> Dibuat untuk memenuhi tugas course React JS Lanjutan SIB NF Academy.
 
 
 ---
