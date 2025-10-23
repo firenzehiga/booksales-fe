@@ -28,16 +28,6 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 - Buat fitur read dan create data untuk Genre dan Author.
 ---
 
-- **Pertemuan 2**: 23 Oktober 2025
-
-## Struktur Repo
-- Setiap tugas akan disimpan sesuai pertemuan.
-- File tugas pertemuan 1: Buatlah fitur update dan delete data untuk bagian genre dan author pada tampilan Admin. Desain antarmuka sesuai kreativitas masing-masing..
-
- Tugas:
-- Buat fitur update dan delete data untuk Genre dan Author.
----
-
 > Dibuat untuk memenuhi tugas course React JS Lanjutan SIB NF Academy.
 
 ---
