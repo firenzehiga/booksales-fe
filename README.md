@@ -38,6 +38,16 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 - Buat fitur update dan delete data untuk Genre dan Author.
 ---
 
+- **Pertemuan 3**: 27 Oktober 2025
+
+## Struktur Repo
+- Setiap tugas akan disimpan sesuai pertemuan.
+- File tugas pertemuan 1: Buatlah fitur register.
+
+ Tugas:
+- Silakan buat fitur registrasi pengguna sebagai bagian dari pengembangan aplikasi berbasis React JS. Anda diberikan kebebasan untuk merancang desain antarmuka (UI) sesuai kreativitas masing-masing. Pastikan tampilan yang dibuat bersifat responsif, menarik secara visual, dan mudah digunakan oleh pengguna.
+---
+
 > Dibuat untuk memenuhi tugas course React JS Lanjutan SIB NF Academy.
 
 ---
