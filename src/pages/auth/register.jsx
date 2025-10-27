@@ -37,23 +37,20 @@ export default function Register() {
 			localStorage.setItem("userInfo", JSON.stringify(response.user));
 			return navigate(response.user.role === "admin" ? "/admin" : "/");
 		} catch (err) {
-			const data = err.response?.data ?? err;
-			let message = "";
+			const data = err?.response?.data ?? err;
 
-			if (typeof data === "string") {
-				message = data;
-			} else if (data?.message) {
-				// jika message berupa object seperti { email: ["..."] }
-				if (typeof data.message === "string") {
-					message = data.message;
-				} else {
-					message = Object.values(data.message).flat().join(" ");
+			const message = (() => {
+				if (!data) return "";
+				if (typeof data === "string") return data; // jika pesan error berupa string
+				if (typeof data === "object") {
+					// jika pesan error berupa object
+					if (typeof data.message === "string") return data.message; // jika pesan error berupa string
+					if (data.message) return Object.values(data.message).flat().join(" "); // jika pesan error berupa array
+					if (data.errors) return Object.values(data.errors).flat().join(" "); // jika pesan error berupa array di dalam object
+					return JSON.stringify(data);
 				}
-			} else if (data?.errors) {
-				message = Object.values(data.errors).flat().join(" ");
-			} else {
-				message = JSON.stringify(data);
-			}
+				return String(data);
+			})();
 			setError(message);
 		} finally {
 			setLoading(false);
