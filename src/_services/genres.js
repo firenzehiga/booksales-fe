@@ -6,8 +6,13 @@ export const getGenres = async () => {
 };
 
 export const createGenre = async (data) => {
+	const token = localStorage.getItem("accessToken");
 	try {
-		const response = await API.post("/genres", data);
+		const response = await API.post("/genres", data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -26,8 +31,13 @@ export const showGenre = async (id) => {
 };
 
 export const updateGenre = async (id, data) => {
+	const token = localStorage.getItem("accessToken");
 	try {
-		const response = await API.post(`/genres/${id}`, data);
+		const response = await API.post(`/genres/${id}`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -36,8 +46,13 @@ export const updateGenre = async (id, data) => {
 };
 
 export const deleteGenre = async (id) => {
+	const token = localStorage.getItem("accessToken");
 	try {
-		await API.delete(`/genres/${id}`);
+		await API.delete(`/genres/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 	} catch (error) {
 		console.log(error);
 		throw error;

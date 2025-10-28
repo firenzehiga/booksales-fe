@@ -1,30 +1,56 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { logout, useDecodeToken } from "../_services/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AdminLayout() {
 	const navigate = useNavigate();
 	const token = localStorage.getItem("accessToken");
 	const decodedData = useDecodeToken(token);
-	const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+	const currentUser = JSON.parse(localStorage.getItem("userInfo") || "{}");
+	const [openDropdownId, setOpenDropdownId] = useState(null);
 
 	useEffect(() => {
 		if (!token || !decodedData || !decodedData.success) {
 			navigate("/login");
+			return;
 		}
-		const role = userInfo.role;
-		if (role !== "admin" || !role) {
+		const role = currentUser?.role;
+		if (!role || String(role).toLowerCase() !== "admin") {
 			navigate("/");
 		}
 	}, [token, decodedData, navigate]);
 
+	const toggleDropdown = (id) =>
+		setOpenDropdownId((prev) => (prev === id ? null : id));
+
+	// tutup dropdown saat klik di luar dropdown
+	useEffect(() => {
+		const handleDocClick = (e) => {
+			// kalau klik diluar usermenu dropdown
+			if (!e.target.closest("[data-dropdown-wrapper]")) {
+				setOpenDropdownId(null);
+			}
+		};
+		document.addEventListener("mousedown", handleDocClick);
+		return () => {
+			document.removeEventListener("mousedown", handleDocClick);
+		};
+	}, []);
+
 	const handleLogout = async () => {
 		if (token) {
-			await logout({ token });
-			localStorage.removeItem("userInfo");
+			try {
+				await logout({ token });
+			} catch (err) {
+				console.error(err);
+			}
 		}
-		navigate("/login");
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("userInfo");
+		toast.success("Logout berhasil!");
+		navigate("/");
 	};
 
 	return (
@@ -91,47 +117,55 @@ export default function AdminLayout() {
 								</svg>
 							</button>
 
-							<button
-								type="button"
-								className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-								id="user-menu-button"
-								aria-expanded="false"
-								data-dropdown-toggle="dropdown">
-								<span className="sr-only">Open user menu</span>
-								<Link
-									to=""
-									className=" bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none ">
-									{userInfo.name}
-								</Link>
-								<img
-									className="w-8 h-8 rounded-full"
-									src="/logo.jpg"
-									alt="user photo"
-								/>
-							</button>
-							{/* <!-- Dropdown menu --> */}
-							<div
-								className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
-								id="dropdown">
-								<div className="py-3 px-4">
-									<span className="block text-sm font-semibold text-gray-900 dark:text-white">
-										Neil Sims
-									</span>
-									<span className="block text-sm text-gray-900 truncate dark:text-white">
-										name@flowbite.com
-									</span>
+							<div className="relative" data-dropdown-wrapper="userMenu">
+								<button
+									type="button"
+									className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+									id="user-menu-button"
+									aria-expanded={openDropdownId === "userMenu"}
+									onClick={() => toggleDropdown("userMenu")}>
+									<span className="sr-only">Open user menu</span>
+
+									<img
+										className="w-8 h-8 rounded-full"
+										src="/logo.jpg"
+										alt="user photo"
+									/>
+								</button>
+
+								{/* Dropdown menu (controlled) */}
+								<div
+									className={`${
+										openDropdownId === "userMenu" ? "block" : "hidden"
+									} z-50 my-4 w-56 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl absolute right-0`}
+									id="dropdown">
+									<div className="py-3 px-4">
+										<span className="block text-sm font-semibold text-gray-900 dark:text-white">
+											{currentUser?.name || "User"}
+										</span>
+										<span className="block text-sm text-gray-900 truncate dark:text-white">
+											{currentUser?.email || "-"}
+										</span>
+									</div>
+									<ul
+										className="py-1 text-gray-700 dark:text-gray-300"
+										aria-labelledby="dropdown">
+										<li>
+											<Link
+												to="/admin/profile"
+												className="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+												Profile
+											</Link>
+										</li>
+										<li>
+											<button
+												onClick={handleLogout}
+												className="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+												Logout
+											</button>
+										</li>
+									</ul>
 								</div>
-								<ul
-									className="py-1 text-gray-700 dark:text-gray-300"
-									aria-labelledby="dropdown">
-									<li>
-										<Link
-											to="#"
-											className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-											Sign out
-										</Link>
-									</li>
-								</ul>
 							</div>
 						</div>
 					</div>
@@ -145,22 +179,6 @@ export default function AdminLayout() {
 					id="drawer-navigation">
 					<div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
 						<ul className="space-y-2">
-							<li>
-								<Link
-									to="admin"
-									className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-										xmlns="http://www.w3.org/2000/svg">
-										<path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-										<path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-									</svg>
-									<span className="ml-3">Overview</span>
-								</Link>
-							</li>
 							<li>
 								<Link
 									to="/admin/users"
@@ -257,31 +275,6 @@ export default function AdminLayout() {
 									</svg>
 									<span className="ml-3">Transaction</span>
 								</Link>
-							</li>
-							<li>
-								<Link
-									to="#"
-									className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-									<svg
-										aria-hidden="true"
-										className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-										xmlns="http://www.w3.org/2000/svg">
-										<path
-											fillRule="evenodd"
-											d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-.08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c.954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z"
-											clipRule="evenodd"></path>
-									</svg>
-									<span className="ml-3">Help</span>
-								</Link>
-							</li>
-							<li>
-								<button
-									onClick={handleLogout}
-									className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 bg-red-400 hover:bg-red-500 ">
-									<span className="ml-3">Logout</span>
-								</button>
 							</li>
 						</ul>
 					</div>

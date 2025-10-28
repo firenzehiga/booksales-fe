@@ -3,6 +3,8 @@ import Home from "./pages/public";
 import PublicLayout from "./layouts/public";
 import Books from "./pages/public/books";
 import DetailBook from "./pages/public/books/show";
+import CustomerTransactions from "./pages/public/transactions";
+import Profile from "./pages/public/profile";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import AdminLayout from "./layouts/admin";
@@ -17,6 +19,8 @@ import AuthorCreate from "./pages/admin/authors/create";
 import BookEdit from "./pages/admin/books/edit";
 import GenreEdit from "./pages/admin/genres/edit";
 import AuthorEdit from "./pages/admin/authors/edit";
+import AdminUsers from "./pages/admin/users";
+import AdminTransactions from "./pages/admin/transactions";
 function App() {
 	return (
 		<>
@@ -25,6 +29,8 @@ function App() {
 					{/* Public */}
 					<Route element={<PublicLayout />}>
 						<Route index element={<Home />} />
+						<Route path="profile" element={<Profile />} />
+						<Route path="transactions" element={<CustomerTransactions />} />
 						<Route path="books">
 							<Route index element={<Books />} />
 							<Route path="show/:id" element={<DetailBook />} />
@@ -38,7 +44,11 @@ function App() {
 					{/* Admin */}
 					<Route path="admin" element={<AdminLayout />}>
 						<Route path="dashboard" element={<Dashboard />} />
+						<Route path="profile" element={<Profile />} />
 
+						<Route path="users">
+							<Route index element={<AdminUsers />} />
+						</Route>
 						<Route path="authors">
 							<Route index element={<AdminAuthors />} />
 							<Route path="create" element={<AuthorCreate />} />
@@ -53,6 +63,9 @@ function App() {
 							<Route index element={<AdminBooks />} />
 							<Route path="create" element={<BookCreate />} />
 							<Route path="edit/:id" element={<BookEdit />} />
+						</Route>
+						<Route path="transactions">
+							<Route index element={<AdminTransactions />} />
 						</Route>
 					</Route>
 				</Routes>

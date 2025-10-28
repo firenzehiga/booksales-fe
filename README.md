@@ -48,6 +48,21 @@ Repository ini berisi kumpulan tugas-tugas dari course React JS Lanjutan SIB NF 
 - Silakan buat fitur registrasi pengguna sebagai bagian dari pengembangan aplikasi berbasis React JS. Anda diberikan kebebasan untuk merancang desain antarmuka (UI) sesuai kreativitas masing-masing. Pastikan tampilan yang dibuat bersifat responsif, menarik secara visual, dan mudah digunakan oleh pengguna.
 ---
 
+- **Pertemuan 4**: 28 Oktober 2025
+
+## Struktur Repo
+- Setiap tugas akan disimpan sesuai pertemuan.
+- File tugas pertemuan 1: Tambahkan pengaturan routing dan service otorisasi pada project React JS Anda untuk membatasi akses antara pengguna biasa (user) dan administrator (admin). Buat logika yang membedakan hak akses user dan admin.
+
+ Hal yang Baru:
+- Membuat bisnis proses transaksi buku
+- Batasi akses ke halaman tertentu sesuai peran
+- Menambah halaman riwayat transaksi customer
+- Membuat halaman profil untuk kedua role
+- Menambah tampilan read data users dan transaction di admin
+- Instal react-hot-toast
+---
+
 > Dibuat untuk memenuhi tugas course React JS Lanjutan SIB NF Academy.
 
 ---

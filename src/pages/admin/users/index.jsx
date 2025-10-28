@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { deleteAuthor, getAuthors } from "../../../_services/author";
-import { booksImageStorage } from "../../../_api";
+import { deleteUser, getUsers } from "../../../_services/users";
 import toast from "react-hot-toast";
-export default function AdminAuthors() {
-	const [authors, setAuthors] = useState([]);
+export default function AdminUsers() {
+	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const [openDropdownId, setOpenDropdownId] = useState(null);
@@ -14,8 +12,8 @@ export default function AdminAuthors() {
 		const fetchData = async () => {
 			setLoading(true);
 			try {
-				const [authorsData] = await Promise.all([getAuthors()]);
-				setAuthors(authorsData);
+				const [usersData] = await Promise.all([getUsers()]);
+				setUsers(usersData);
 			} catch (err) {
 				console.error(err);
 			} finally {
@@ -31,13 +29,13 @@ export default function AdminAuthors() {
 
 	const handleDelete = async (id) => {
 		const confirmDelete = window.confirm(
-			"Are you sure you want to delete this author?"
+			"Are you sure you want to delete this user?"
 		);
 		if (confirmDelete) {
-			await deleteAuthor(id);
-			setAuthors(authors.filter((author) => author.id !== id));
+			await deleteUser(id);
+			setUsers(users.filter((user) => user.id !== id));
 		}
-		toast.success("Author deleted successfully");
+		toast.success("User deleted successfully");
 	};
 	return (
 		<>
@@ -74,25 +72,6 @@ export default function AdminAuthors() {
 								</div>
 							</form>
 						</div>
-						<div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-							<Link
-								to="/admin/authors/create"
-								className="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">
-								<svg
-									className="h-3.5 w-3.5 mr-2"
-									fill="currentColor"
-									viewBox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg"
-									aria-hidden="true">
-									<path
-										clipRule="evenodd"
-										fillRule="evenodd"
-										d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-									/>
-								</svg>
-								Add Author
-							</Link>
-						</div>
 					</div>
 					<div className="overflow-x-auto">
 						<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -102,10 +81,10 @@ export default function AdminAuthors() {
 										Name
 									</th>
 									<th scope="col" className="px-4 py-3">
-										Bio
+										Email
 									</th>
 									<th scope="col" className="px-4 py-3">
-										Photo
+										Role
 									</th>
 									<th scope="col" className="px-4 py-3">
 										<span className="sr-only">Actions</span>
@@ -113,29 +92,23 @@ export default function AdminAuthors() {
 								</tr>
 							</thead>
 							<tbody>
-								{authors.length > 0 ? (
-									authors.map((author) => (
+								{users.length > 0 ? (
+									users.map((user) => (
 										<tr className="border-b dark:border-gray-700">
 											<th
 												scope="row"
 												className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-												{author.name}
+												{user.name}
 											</th>
-											<td className="px-4 py-3">{author.bio}</td>
-											<td className="px-4 py-3">
-												<img
-													src={`${booksImageStorage}/authors/${author.photo}`}
-													alt={author.name}
-													className="w-16 h-16 object-cover rounded"
-												/>
-											</td>
+											<td className="px-4 py-3">{user.email}</td>
+											<td className="px-4 py-3">{user.role}</td>
 
 											<td className="px-4 py-3 flex items-center justify-end relative">
 												<button
-													id={`dropdown-button-${author.id}`}
+													id={`dropdown-button-${user.id}`}
 													className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
 													type="button"
-													onClick={() => toggleDropdown(author.id)}>
+													onClick={() => toggleDropdown(user.id)}>
 													<svg
 														className="w-5 h-5"
 														aria-hidden="true"
@@ -145,25 +118,14 @@ export default function AdminAuthors() {
 														<path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
 													</svg>
 												</button>
-												{openDropdownId === author.id && (
+												{openDropdownId === user.id && (
 													<div
 														id="dropdown"
 														className="absolute right-0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
 														style={{ top: "100%", right: "0" }}>
-														<ul
-															className="py-1 text-sm text-gray-700 dark:text-gray-200"
-															aria-labelledby={`dropdown-button-${author.id}`}>
-															<li>
-																<Link
-																	to={`/admin/authors/edit/${author.id}`}
-																	className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-																	Edit
-																</Link>
-															</li>
-														</ul>
 														<div className="py-1">
 															<button
-																onClick={() => handleDelete(author.id)}
+																onClick={() => handleDelete(user.id)}
 																className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
 																Delete
 															</button>

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { getAuthors } from "../../../_services/author";
 import { Loader2 } from "lucide-react";
 import { booksImageStorage } from "../../../_api";
+import toast from "react-hot-toast";
 export default function AdminBooks() {
 	const [books, setBooks] = useState([]);
 	const [genres, setGenres] = useState([]);
@@ -55,6 +56,7 @@ export default function AdminBooks() {
 			await deleteBook(id);
 			setBooks(books.filter((book) => book.id !== id));
 		}
+		toast.success("Book deleted successfully");
 	};
 	return (
 		<>

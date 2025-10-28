@@ -53,14 +53,14 @@ export default function Books() {
 											<li className="flex items-center gap-2">
 												<ChartBarStacked className="h-4 w-4 text-gray-500 dark:text-gray-400" />
 												<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-													{book.genre_name}
+													{book.genre.name}
 												</p>
 											</li>
 
 											<li className="flex items-center gap-2">
 												<User2 className="h-4 w-4 text-gray-500 dark:text-gray-400" />
 												<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-													{book.author_name}
+													{book.author?.name}
 												</p>
 											</li>
 										</ul>

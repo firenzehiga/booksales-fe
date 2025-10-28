@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { deleteGenre, getGenres } from "../../../_services/genres";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 export default function AdminGenres() {
 	const [genres, setGenres] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ export default function AdminGenres() {
 			await deleteGenre(id);
 			setGenres(genres.filter((genre) => genre.id !== id));
 		}
+		toast.success("Genre deleted successfully");
 	};
 	return (
 		<>
